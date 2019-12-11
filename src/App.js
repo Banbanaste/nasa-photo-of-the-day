@@ -32,7 +32,7 @@ function App() {
         .then(response => response.json())
         .then(jsonObject => {
           console.log(jsonObject);
-          setStateObject({ ...stateObject, ...jsonObject });
+          setStateObject({ ...stateObject, loading: false, ...jsonObject });
         });
     }
   }, [stateObject.date]);
@@ -51,7 +51,12 @@ function App() {
 
   function dateHandler(event) {
     console.log(event.target.value);
-    setStateObject({ ...stateObject, check: true, date: event.target.value });
+    setStateObject({
+      ...stateObject,
+      loading: true,
+      check: true,
+      date: event.target.value
+    });
   }
 
   return (
@@ -66,7 +71,9 @@ function App() {
             fontSize: "100px"
           }}
         >
-          LOADING
+          <div class="spinner-grow text-success fast ml-3" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
         </div>
       )}
       {!stateObject.loading && (
