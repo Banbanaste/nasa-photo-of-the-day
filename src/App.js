@@ -18,14 +18,31 @@ function App() {
       });
   }, []);
 
+  const setWidth = {
+    maxWidth: "400px",
+    display: "flex",
+    flexDirection: "column",
+    textAlign: "left",
+    margin: "0 auto"
+  };
+
+  const setMargin = {
+    margin: "10px 0"
+  };
+
   return (
     <div className="App">
-      <div>
-        <h1>NASA's</h1>
-        <h2>Picture of the Day for {stateObject.date}</h2>
+      <div style={setWidth}>
+        <div>
+          <h1 style={setMargin}>NASA's</h1>
+          <h2 style={setMargin}>Picture of the Day for {stateObject.date}</h2>
+        </div>
+        <img
+          src={stateObject.hdurl}
+          style={{ width: "100%", margin: "20px 0" }}
+        />
+        <p>{stateObject.explanation}</p>
       </div>
-      <img src={stateObject.hdurl} />
-      <p>{stateObject.explanation}</p>
     </div>
   );
 }
