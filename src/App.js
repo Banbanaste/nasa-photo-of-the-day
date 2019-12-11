@@ -66,7 +66,12 @@ function App() {
         </div>
         <img
           src={stateObject.hdurl}
-          style={{ width: "100%", margin: "20px 0" }}
+          style={{
+            width: "350px",
+            margin: "20px 0",
+            border: "solid 1px green",
+            borderRadius: "2px"
+          }}
         />
         <p>{stateObject.explanation}</p>
       </div>

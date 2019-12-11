@@ -1,4 +1,7 @@
 .App {
+  background-color: black;
+  color: rgb(255, 255, 255);
+  min-height: 100vh;
 }
 
 .App-logo {
