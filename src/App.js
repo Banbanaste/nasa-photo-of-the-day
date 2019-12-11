@@ -4,26 +4,28 @@ import "./App.css";
 // api -> https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY
 
 function App() {
-  const [stateObject, setStateObject] = useState({ currentDate: "" });
+  const [stateObject, setStateObject] = useState({
+    currentDate: "",
+    loading: true
+  });
 
   useEffect(() => {
-    console.log("logs on component mount");
     fetch(
       "https://api.nasa.gov/planetary/apod?api_key=eAhnsa3UIzMgyMUd2D1dtw6uF1WuRaq3etKGFf8x"
     )
       .then(response => response.json())
       .then(jsonObject => {
         console.log(jsonObject);
-        setStateObject({ currentDate: jsonObject.date, ...jsonObject });
+        setStateObject({
+          currentDate: jsonObject.date,
+          loading: false,
+          ...jsonObject
+        });
       });
   }, []);
 
   useEffect(() => {
     if (stateObject.check) {
-      console.log("date changed");
-      console.log(
-        `https://api.nasa.gov/planetary/apod?api_key=eAhnsa3UIzMgyMUd2D1dtw6uF1WuRaq3etKGFf8x&date=${stateObject.date}`
-      );
       fetch(
         `https://api.nasa.gov/planetary/apod?api_key=eAhnsa3UIzMgyMUd2D1dtw6uF1WuRaq3etKGFf8x&date=${stateObject.date}`
       )
@@ -36,7 +38,7 @@ function App() {
   }, [stateObject.date]);
 
   const setWidth = {
-    maxWidth: "400px",
+    maxWidth: "500px",
     display: "flex",
     flexDirection: "column",
     textAlign: "left",
@@ -54,43 +56,58 @@ function App() {
 
   return (
     <div className="App">
-      <div style={setWidth}>
-        <div>
-          <h1 style={setMargin}>NASA's</h1>
-          <h2 style={setMargin}>Picture of the Day for {stateObject.date}</h2>
-          <input
-            type="date"
-            onChange={dateHandler}
-            max={stateObject.currentDate}
-          ></input>
+      {stateObject.loading && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100vh",
+            fontSize: "100px"
+          }}
+        >
+          LOADING
         </div>
-        {stateObject.media_type == "image" && (
-          <img
-            src={stateObject.hdurl}
-            style={{
-              width: "350px",
-              margin: "20px 0",
-              border: "solid 1px green",
-              borderRadius: "2px"
-            }}
-          />
-        )}
-        {stateObject.media_type == "video" && (
-          <iframe
-            style={{
-              margin: "20px 0",
-              border: "solid 1px green",
-              borderRadius: "2px"
-            }}
-            src={stateObject.url}
-            width="560"
-            height="315"
-            frameborder="0"
-            allowfullscreen
-          ></iframe>
-        )}
-        <p>{stateObject.explanation}</p>
-      </div>
+      )}
+      {!stateObject.loading && (
+        <div style={setWidth}>
+          <div>
+            <h1 style={setMargin}>NASA's</h1>
+            <h2 style={setMargin}>Picture of the Day for {stateObject.date}</h2>
+            <input
+              type="date"
+              onChange={dateHandler}
+              max={stateObject.currentDate}
+            ></input>
+          </div>
+          {stateObject.media_type == "image" && (
+            <img
+              src={stateObject.hdurl}
+              style={{
+                width: "350px",
+                margin: "20px 0",
+                border: "solid 1px green",
+                borderRadius: "2px"
+              }}
+            />
+          )}
+          {stateObject.media_type == "video" && (
+            <iframe
+              style={{
+                margin: "20px 0",
+                border: "solid 1px green",
+                borderRadius: "2px"
+              }}
+              src={stateObject.url}
+              width="560"
+              height="315"
+              frameborder="0"
+              allowfullscreen
+            ></iframe>
+          )}
+          <p>{stateObject.explanation}</p>
+        </div>
+      )}
     </div>
   );
 }
