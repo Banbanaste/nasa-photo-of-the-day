@@ -4,7 +4,7 @@ import "./App.css";
 // api -> https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY
 
 function App() {
-  const [stateObject, setStateObject] = useState({});
+  const [stateObject, setStateObject] = useState({ currentDate: "" });
 
   useEffect(() => {
     console.log("logs on component mount");
@@ -14,9 +14,26 @@ function App() {
       .then(response => response.json())
       .then(jsonObject => {
         console.log(jsonObject);
-        setStateObject({ ...jsonObject });
+        setStateObject({ currentDate: jsonObject.date, ...jsonObject });
       });
   }, []);
+
+  useEffect(() => {
+    if (stateObject.check) {
+      console.log("date changed");
+      console.log(
+        `https://api.nasa.gov/planetary/apod?api_key=eAhnsa3UIzMgyMUd2D1dtw6uF1WuRaq3etKGFf8x&date=${stateObject.date}`
+      );
+      fetch(
+        `https://api.nasa.gov/planetary/apod?api_key=eAhnsa3UIzMgyMUd2D1dtw6uF1WuRaq3etKGFf8x&date=${stateObject.date}`
+      )
+        .then(response => response.json())
+        .then(jsonObject => {
+          console.log(jsonObject);
+          setStateObject({ ...stateObject, ...jsonObject });
+        });
+    }
+  }, [stateObject.date]);
 
   const setWidth = {
     maxWidth: "400px",
@@ -30,12 +47,22 @@ function App() {
     margin: "10px 0"
   };
 
+  function dateHandler(event) {
+    console.log(event.target.value);
+    setStateObject({ ...stateObject, check: true, date: event.target.value });
+  }
+
   return (
     <div className="App">
       <div style={setWidth}>
         <div>
           <h1 style={setMargin}>NASA's</h1>
           <h2 style={setMargin}>Picture of the Day for {stateObject.date}</h2>
+          <input
+            type="date"
+            onChange={dateHandler}
+            max={stateObject.currentDate}
+          ></input>
         </div>
         <img
           src={stateObject.hdurl}
