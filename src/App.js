@@ -64,15 +64,31 @@ function App() {
             max={stateObject.currentDate}
           ></input>
         </div>
-        <img
-          src={stateObject.hdurl}
-          style={{
-            width: "350px",
-            margin: "20px 0",
-            border: "solid 1px green",
-            borderRadius: "2px"
-          }}
-        />
+        {stateObject.media_type == "image" && (
+          <img
+            src={stateObject.hdurl}
+            style={{
+              width: "350px",
+              margin: "20px 0",
+              border: "solid 1px green",
+              borderRadius: "2px"
+            }}
+          />
+        )}
+        {stateObject.media_type == "video" && (
+          <iframe
+            style={{
+              margin: "20px 0",
+              border: "solid 1px green",
+              borderRadius: "2px"
+            }}
+            src={stateObject.url}
+            width="560"
+            height="315"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+        )}
         <p>{stateObject.explanation}</p>
       </div>
     </div>
