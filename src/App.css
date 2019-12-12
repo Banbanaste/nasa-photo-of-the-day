@@ -2,4 +2,54 @@
   background-color: black;
   color: rgb(255, 255, 255);
   min-height: 100vh;
+  font-family: "Roboto", sans-serif;
+}
+
+h1,
+h2 {
+  font-weight: 400;
+}
+
+.loadAnimation {
+  opacity: 0.5;
+  background: linear-gradient(90deg, #000000, #ffffff);
+  background-size: 400% 400%;
+
+  -webkit-animation: gradientLoad 5s ease infinite;
+  -moz-animation: gradientLoad 5s ease infinite;
+  animation: gradientLoad 5s ease infinite;
+}
+
+@-webkit-keyframes gradientLoad {
+  0% {
+    background-position: 0% 79%;
+  }
+  50% {
+    background-position: 100% 22%;
+  }
+  100% {
+    background-position: 0% 79%;
+  }
+}
+@-moz-keyframes gradientLoad {
+  0% {
+    background-position: 0% 79%;
+  }
+  50% {
+    background-position: 100% 22%;
+  }
+  100% {
+    background-position: 0% 79%;
+  }
+}
+@keyframes gradientLoad {
+  0% {
+    background-position: 0% 79%;
+  }
+  50% {
+    background-position: 100% 22%;
+  }
+  100% {
+    background-position: 0% 79%;
+  }
 }

@@ -1,14 +1,84 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-
-// api -> https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY
+import styled from "styled-components";
 
 function App() {
+  /* styled components */
+  const Wrapper = styled.div`
+    max-width: 650px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin: 0 auto;
+  `;
+
+  const DateInput = styled.input`
+    padding: 5px;
+    border-radius: 5px;
+    border: solid 1px green;
+    color: #fff;
+    background-color: #000;
+    font-size: 14px;
+  `;
+
+  const Image = styled.img`
+    width: 350px;
+    margin: 20px 0;
+    border: solid 1px green;
+    border-radius: 2px;
+  `;
+
+  const Video = styled.iframe`
+    margin: 20px 0;
+    border: solid 1px green;
+    border-radius: 2px;
+    height: 315px;
+    width: 560px;
+  `;
+
+  const LoadTitle = styled.div`
+    height: 45px;
+    width: 100px;
+    border-radius: 2px;
+
+    margin: 10px 0;
+  `;
+
+  const LoadSubTitle = styled.div`
+    height: 35px;
+    width: 300px;
+    border-radius: 2px;
+
+    margin: 10px 0;
+  `;
+
+  const LoadInput = styled.div`
+    height: 35px;
+    width: 120px;
+    border-radius: 2px;
+
+    margin: 10px 0;
+  `;
+
+  const LoadImg = styled.div`
+    height: 350px;
+    width: 350px;
+    border-radius: 2px;
+
+    margin: 10px 0;
+  `;
+
+  const setMargin = {
+    margin: "10px 0"
+  };
+
+  /* initiating state */
   const [stateObject, setStateObject] = useState({
     currentDate: "",
     loading: true
   });
 
+  /* on page load effect */
   useEffect(() => {
     fetch(
       "https://api.nasa.gov/planetary/apod?api_key=eAhnsa3UIzMgyMUd2D1dtw6uF1WuRaq3etKGFf8x"
@@ -24,6 +94,7 @@ function App() {
       });
   }, []);
 
+  /* on date change effect */
   useEffect(() => {
     if (stateObject.check) {
       fetch(
@@ -37,18 +108,7 @@ function App() {
     }
   }, [stateObject.date]);
 
-  const setWidth = {
-    maxWidth: "500px",
-    display: "flex",
-    flexDirection: "column",
-    textAlign: "left",
-    margin: "0 auto"
-  };
-
-  const setMargin = {
-    margin: "10px 0"
-  };
-
+  /* date change handler function */
   function dateHandler(event) {
     console.log(event.target.value);
     setStateObject({
@@ -62,58 +122,37 @@ function App() {
   return (
     <div className="App">
       {stateObject.loading && (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "100vh",
-            fontSize: "100px"
-          }}
-        >
-          <div class="spinner-grow text-success fast ml-3" role="status">
-            <span class="sr-only">Loading...</span>
-          </div>
-        </div>
+        <Wrapper>
+          <LoadTitle className="loadAnimation" />
+          <LoadSubTitle className="loadAnimation" />
+          <LoadInput className="loadAnimation" />
+          <LoadImg className="loadAnimation" />
+        </Wrapper>
       )}
+
       {!stateObject.loading && (
-        <div style={setWidth}>
+        <Wrapper>
           <div>
             <h1 style={setMargin}>NASA's</h1>
-            <h2 style={setMargin}>Picture of the Day for {stateObject.date}</h2>
-            <input
+            <h2 style={setMargin}>
+              Picture of the Day for{" "}
+              <span style={{ color: "green" }}>{stateObject.date}</span>
+            </h2>
+            <DateInput
               type="date"
               onChange={dateHandler}
               max={stateObject.currentDate}
-            ></input>
-          </div>
-          {stateObject.media_type == "image" && (
-            <img
-              src={stateObject.hdurl}
-              style={{
-                width: "350px",
-                margin: "20px 0",
-                border: "solid 1px green",
-                borderRadius: "2px"
-              }}
             />
+          </div>
+          {/* Image or Video */}
+          {stateObject.media_type == "image" && (
+            <Image src={stateObject.hdurl} />
           )}
           {stateObject.media_type == "video" && (
-            <iframe
-              style={{
-                margin: "20px 0",
-                border: "solid 1px green",
-                borderRadius: "2px"
-              }}
-              src={stateObject.url}
-              width="560"
-              height="315"
-              frameborder="0"
-              allowfullscreen
-            ></iframe>
+            <Video src={stateObject.url} frameborder="0" allowfullscreen />
           )}
           <p>{stateObject.explanation}</p>
-        </div>
+        </Wrapper>
       )}
     </div>
   );
